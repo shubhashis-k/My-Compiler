@@ -31,6 +31,6 @@ return 1;
 }
 
 int main(void) {
-	//yyin = fopen("input", "r");
+	yyin = fopen("input", "r");
 	yyparse();
 }

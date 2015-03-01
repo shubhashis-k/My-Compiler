@@ -1,0 +1,14 @@
+b assign 25.
+a assign b minus 5 mul 5.
+b assign 25.
+b assign 5 mul b minus 5.
+b assign 5 mul 5 minus 5.
+a assign b minus 5 mul 5.
+b assign 25.
+b assign 5 mul b minus 5.
+b assign 5.
+b assign 5.
+a assign 6.
+c assign 7.
+
+e assign a mul c minus b.
