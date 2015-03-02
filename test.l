@@ -9,6 +9,7 @@ void yyerror(char *);
 [0-9]+ 				{ yylval = atoi(yytext); return INT;}
 
 "("|")"|"{"|"}"		{ return *yytext;		}
+_if					{ return IFS;		}
 minus				{ return MINUS;		}
 plus 				{ return PLUS;		}	
 mul 				{ return MULTIPLY; 	}
@@ -31,6 +32,6 @@ return 1;
 }
 
 int main(void) {
-	yyin = fopen("input", "r");
+	//yyin = fopen("input", "r");
 	yyparse();
 }

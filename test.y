@@ -3,45 +3,47 @@
 #include <math.h>
 void yyerror(char *);
 int yylex(void);
-int Variable[255];
+int values[255];
 %}
 
-%token MINUS PLUS MULTIPLY POWER PAREN INT DIV FAC VAR SHOW
+%token MINUS PLUS MULTIPLY POWER PAREN INT DIV FAC VAR SHOW IFS
 
 %left ASSIGN
 %left PLUS MINUS
 %left MULTIPLY DIV
-
+%nonassoc IFS
 
 %%
 program: program statement 				
 |		 /* NULL */							
 ;
 statement: 	exp '.'
-|			SHOW VAR '.' 					{printf("%d\n", Variable[$2]);}								
+|			SHOW VAR '.' 					{printf("%d\n", values[$2]);}
+|			IfStatement '.'					{printf("if executed\n");}								
 ;
 exp: 		INT											
-| 			exp MULTIPLY exp 				{printf("1\n"); $$ = $1 * $3; }
-|			Varia MULTIPLY exp                {printf("2\n"); $$ = Variable[$1] * $3;}
-|			Varia MULTIPLY Varia                {printf("3\n"); $$ = Variable[$1] * Variable[$3];}
-|			exp MULTIPLY Varia                {printf("4\n"); $$ = $1 * Variable[$3];}
-| 			exp PLUS exp 					{printf("5\n"); $$ = $1 + $3; }
-|			Varia PLUS exp                	{printf("6\n"); $$ = Variable[$1] + $3;}
-|			Varia PLUS Varia                	{printf("7\n"); $$ = Variable[$1] + Variable[$3];}
-|			exp PLUS Varia                	{printf("8\n"); $$ = $1 + Variable[$3];}
-| 			exp MINUS exp 					{printf("9\n"); $$ = $1 - $3; }
-|			Varia MINUS exp                	{printf("10\n"); $$ = Variable[$1] - $3;}
-|			Varia MINUS Varia                	{printf("11\n"); $$ = Variable[$1] - Variable[$3];}
-|			exp MINUS Varia                	{printf("12\n"); $$ = $1 - Variable[$3];}
-| 			exp DIV exp 					{printf("13\n"); $$ = $1 / $3; }
-|			Varia DIV exp                		{printf("14\n"); $$ = Variable[$1] / $3;}
-|			Varia DIV Varia                		{printf("15\n"); $$ = Variable[$1] / Variable[$3];}
-|			exp DIV Varia                		{printf("16\n"); $$ = $1 / Variable[$3];}
-|			Varia ASSIGN exp					{printf("17\n"); Variable[$1] = $3; printf("value of %c is %d\n",$1, Variable[$1]);}																	
-|			Varia ASSIGN Varia                 {printf("18\n"); Variable[$1] = Variable[$3]; printf("value of %c is %d\n",$1, Variable[$1]);} 
+| 			exp MULTIPLY exp 							{printf("1\n"); $$ = $1 * $3; }
+|			Variable MULTIPLY exp                		{printf("2\n"); $$ = values[$1] * $3;}
+|			Variable MULTIPLY Variable                	{printf("3\n"); $$ = values[$1] * values[$3];}
+|			exp MULTIPLY Variable                		{printf("4\n"); $$ = $1 * values[$3];}
+| 			exp PLUS exp 								{printf("5\n"); $$ = $1 + $3; }
+|			Variable PLUS exp                			{printf("6\n"); $$ = values[$1] + $3;}
+|			Variable PLUS Variable                		{printf("7\n"); $$ = values[$1] + values[$3];}
+|			exp PLUS Variable                			{printf("8\n"); $$ = $1 + values[$3];}
+| 			exp MINUS exp 								{printf("9\n"); $$ = $1 - $3; }
+|			Variable MINUS exp                			{printf("10\n"); $$ = values[$1] - $3;}
+|			Variable MINUS Variable                		{printf("11\n"); $$ = values[$1] - values[$3];}
+|			exp MINUS Variable                			{printf("12\n"); $$ = $1 - values[$3];}
+| 			exp DIV exp 								{printf("13\n"); $$ = $1 / $3; }
+|			Variable DIV exp                			{printf("14\n"); $$ = values[$1] / $3;}
+|			Variable DIV Variable                		{printf("15\n"); $$ = values[$1] / values[$3];}
+|			exp DIV Variable                			{printf("16\n"); $$ = $1 / values[$3];}
+|			Variable ASSIGN exp							{printf("17\n"); values[$1] = $3; printf("value of %c is %d\n",$1, values[$1]);}																	
+|			Variable ASSIGN Variable                 	{printf("18\n"); values[$1] = values[$3]; printf("value of %c is %d\n",$1, values[$1]);} 
 ;
-Varia:		VAR
+Variable:		VAR
 ;
+IfStatement:	IFS '(' exp ')' '{' statement '}'		{if($3) {$$}}
 %%
 void yyerror(char *s) {
 fprintf(stderr, "%s\n", s);
