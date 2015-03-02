@@ -1,14 +1,46 @@
-b assign 25.
-a assign b minus 5 mul 5.
-b assign 25.
-b assign 5 mul b minus 5.
-b assign 5 mul 5 minus 5.
-a assign b minus 5 mul 5.
-b assign 25.
-b assign 5 mul b minus 5.
-b assign 5.
-b assign 5.
-a assign 6.
-c assign 7.
+a assign 5.
+_show a.
+b assign a.
+_show b.
+a assign 25 mul 5 minus 5.
+_show a.
 
-e assign a mul c minus b.
+c assign 5.
+_show c.
+b assign a minus 100 plus 5 plus c.
+_show b.
+b assign 4 div 2.
+_show b.
+a assign fac 5.
+_show a.
+b assign 5.
+
+a assign fac b.
+_show a.
+
+a assign 8.
+
+_if(a equals 8)
+{
+	f assign 500.
+}
+_else
+{
+	g assign 700.
+}.
+
+_show f.
+_show g.
+
+
+_if(a equals 9)
+{
+	f assign 900.
+}.
+
+_show f.
+
+sine 91.
+cosine 90.
+tangent 45.
+logbaseten 100.
