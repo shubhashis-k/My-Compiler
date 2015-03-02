@@ -54,6 +54,7 @@ exp: 		INT
 |			Variable EQUALS Variable                	{printf("3\n"); $$ = (values[$1] == values[$3]); }
 |			exp EQUALS Variable                			{printf("4\n"); $$ = ($1 == values[$3]); }
 |			FAC exp										{int x = $2; int result = 1; while (x > 0) {result = result * x; x--;} $$ = result; } 
+|			FAC Variable								{int x = values[$2]; int result = 1; while (x > 0) {result = result * x; x--;} $$ = result; } 
 ;
 Variable:		VAR
 ;
