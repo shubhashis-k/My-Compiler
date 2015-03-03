@@ -1,13 +1,26 @@
-a assign 5.
-_show a.
+<<
+Hello, This is the compiler I designed.
+>>
+
+<<
+All variables [a-z] are assigned 0 at first
+>>
+
+<<
+Every Statement ends with '.'
+>>
+
+
+a assign 5.	<>Here a is assiged 5.
+_show a.	<>Here we can show the value of a.
 b assign a.
 _show b.
-a assign 25 mul 5 minus 5.
+a assign 25 mul 5 minus 5. <>complex expressions work
 _show a.
 
 c assign 5.
 _show c.
-b assign a minus 100 plus 5 plus c.
+b assign a minus 100 plus 5 plus c. <>another example
 _show b.
 b assign 4 div 2.
 _show b.
@@ -20,7 +33,7 @@ _show a.
 
 a assign 8.
 
-_if(a equals 8)
+_if(a equals 8)	<>If a == 8 then f=500 else g == 700.
 {
 	f assign 500.
 }
@@ -29,18 +42,65 @@ _else
 	g assign 700.
 }.
 
-_show f.
-_show g.
+_show f.	<>showing the value of f. 
+_show g.	<>notice g is zero. so else portion executed
 
 
-_if(a equals 9)
+_if(a equals 9) <>if a == 9 then the statement will execute.
 {
 	f assign 900.
 }.
 
-_show f.
+_show f.		<>as the above if is false, f will be 0.
+
+a assign 8.
+
+_if(a less than 10) <>if a < 10 then h = 500. else i = 700.
+{
+	h assign 500.
+}
+_else
+{
+	i assign 700.
+}.
+
+_show h.
+_show i.
+
+
+<<
+Showing the factorial function
+>>
+
+a assign fac 5.
+_show a.
+
+b assign 5.
+a assign fac b.
+_show a.
+
+c assign fac 5 plus 5. <>precedence of factorial is highest. c will be 125.
+_show c.
+
+<<
+Here sin, cos, tan, ln functionalities have been shown.
+>>
 
 sine 91.
 cosine 90.
 tangent 45.
-logbaseten 100.
+logbaseE 100.
+
+<<
+Here functionality of power has been shown.
+>>
+
+A assign pow 4 2 plus 2 mul 5.
+_show A.
+
+c assign 2.
+d assign 4.
+a assign 5.
+
+A assign 5 mul a plus 70 minus c plus 4 minus pow c d.
+_show A.

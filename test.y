@@ -9,14 +9,15 @@ int yylex(void);
 int values[255];
 %}
 
-%token MINUS PLUS MULTIPLY POWER PAREN INT DIV FAC VAR SHOW IFS ELSE EQUALS SIN COS TAN LOG
+%token MINUS PLUS MULTIPLY POWER PAREN INT DIV FAC VAR SHOW IFS ELSE EQUALS SIN COS TAN LOG GREATER LESSER
 
 %nonassoc ASSIGN
 %left PLUS MINUS
 %left MULTIPLY DIV
+%left POWER
 %left FAC
 %nonassoc IFS
-%nonassoc EQUALS
+%nonassoc EQUALS GREATER LESSER
 
 %%
 program: program statement 				
@@ -28,7 +29,7 @@ statement: 	exp '.'
 |			SIN exp '.'						{double x = sin ($2*PI/180); printf("Value of sin(%d) is %lf\n", $2, x);}
 |			COS exp '.'						{double x = cos ($2*PI/180); printf("Value of cos(%d) is %lf\n", $2, x);}
 |			TAN exp '.'						{double x = tan ($2*PI/180); printf("Value of tan(%d) is %lf\n", $2, x);}
-|			LOG exp '.'						{double x = log10($2); printf("Value of log10 (%d) is %lf\n", $2, x);}								
+|			LOG exp '.'						{double x = log($2); printf("Value of ln (%d) is %lf\n", $2, x);}								
 ;
 exp: 		INT											
 | 			exp MULTIPLY exp 							{  	$$ = $1 * $3; 																			}
@@ -53,8 +54,20 @@ exp: 		INT
 |			Variable EQUALS exp                			{  	$$ = (values[$1] == $3); 																}
 |			Variable EQUALS Variable                	{  	$$ = (values[$1] == values[$3]); 														}
 |			exp EQUALS Variable                			{  	$$ = ($1 == values[$3]); 																}
+| 			exp GREATER exp 							{  	$$ = ($1 > $3); 																		}
+|			Variable GREATER exp                		{  	$$ = (values[$1] > $3); 																}
+|			Variable GREATER Variable                	{  	$$ = (values[$1] > values[$3]); 														}
+|			exp GREATER Variable                		{  	$$ = ($1 > values[$3]); 																}
+| 			exp LESSER exp 								{  	$$ = ($1 < $3); 																		}
+|			Variable LESSER exp                			{  	$$ = (values[$1] < $3); 																}
+|			Variable LESSER Variable                	{  	$$ = (values[$1] < values[$3]); 														}
+|			exp LESSER Variable                			{  	$$ = ($1 < values[$3]); 																}
 |			FAC exp										{	int x = $2; int result = 1; while (x > 0) {result = result * x; x--;} $$ = result; 		} 
-|			FAC Variable								{	int x = values[$2]; int result = 1; while (x > 0) {result = result * x; x--;} $$ = result; } 
+|			FAC Variable								{	int x = values[$2]; int result = 1; while (x > 0) {result = result * x; x--;} $$ = result; }
+|			POWER exp exp 								{   $$ = pow($2, $3); }
+|			POWER exp Variable 							{   $$ = pow($2, values[$3]); }
+|			POWER Variable exp 							{   $$ = pow(values[$2], $3); }
+|			POWER Variable Variable 					{   $$ = pow(values[$2], values[$3]); }
 ;
 Variable:		VAR
 ;
